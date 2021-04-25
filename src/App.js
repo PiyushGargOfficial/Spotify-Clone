@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import Login from "./Components/Login";
+import Player from "./Components/Player";
 import { getTokenFromResponse } from "./spotify";
 import SpotifyWebApi from "spotify-web-api-js";
+import { useStateValue } from "./StateProvider";
 
 //Creates an instance so that we can communicate with spotify back and forth.
 const spotify = new SpotifyWebApi();
 
 function App() {
   const [token, setToken] = useState(null);
+  const [{}, dispatch] = useStateValue();
 
   //Run code based on a given condition
   useEffect(() => {
@@ -31,7 +34,7 @@ function App() {
     }
   }, []);
 
-  return <div className="app">{token ? <h1>Logged In</h1> : <Login />}</div>;
+  return <div className="app">{token ? <Player /> : <Login />}</div>;
 }
 
 export default App;
