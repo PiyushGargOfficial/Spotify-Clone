@@ -1,9 +1,16 @@
 import React from "react";
+import "../CSS/Player.css";
+import Body from "./Body";
+import Sidebar from "./Sidebar";
 
 function Player() {
   return (
     <div>
-      <h1>i am logged in!</h1>
+      <div className="player__body">
+        <Sidebar />
+        <Body />
+      </div>
+      {/* Footer */}
     </div>
   );
 }

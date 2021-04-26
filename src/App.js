@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import Login from "./Components/Login";
 import Player from "./Components/Player";
@@ -10,8 +10,9 @@ import { useStateValue } from "./StateProvider";
 const spotify = new SpotifyWebApi();
 
 function App() {
-  const [token, setToken] = useState(null);
-  const [{}, dispatch] = useStateValue();
+  //We used the useState before connecting the Context API, but now we used the token state in the data layer itself.
+  // const [token, setToken] = useState(null);
+  const [{ token }, dispatch] = useStateValue();
 
   //Run code based on a given condition
   useEffect(() => {
@@ -22,19 +23,29 @@ function App() {
     //Since there is a name clash, some production companies use a "_" in front of the variable.
     const _token = hash.access_token;
     if (_token) {
-      setToken(_token);
+      dispatch({
+        type: "SET_TOKEN",
+        token: _token,
+      });
 
       //Gives the key to the spotify wrapper and allows us to talk to the spotify api.
       spotify.setAccessToken(_token);
 
       //Gives us the user details based on the token provided.
       spotify.getMe().then((user) => {
-        console.log("🧔", user);
+        dispatch({
+          type: "SET_USER",
+          user: user,
+        });
       });
     }
   }, []);
 
-  return <div className="app">{token ? <Player /> : <Login />}</div>;
+  return (
+    <div className="app">
+      {token ? <Player spotify={spotify} /> : <Login />}
+    </div>
+  );
 }
 
 export default App;
