@@ -38,8 +38,17 @@ function App() {
           user: user,
         });
       });
+
+      //Get User Playlists
+      spotify.getUserPlaylists().then((playlists) => {
+        console.log(playlists);
+        dispatch({
+          type: "SET_PLAYLISTS",
+          playlists: playlists,
+        });
+      });
     }
-  }, []);
+  }, [token, dispatch]);
 
   return (
     <div className="app">
