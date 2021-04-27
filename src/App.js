@@ -46,6 +46,14 @@ function App() {
           playlists: playlists,
         });
       });
+
+      //Get a specified Playlist for the body content
+      spotify.getPlaylist("4GpBODwgLjOwL6JcBunQcr").then((response) =>
+        dispatch({
+          type: "SET_DISCOVER_WEEKLY",
+          discover_weekly: response,
+        })
+      );
     }
   }, [token, dispatch]);
 
